@@ -142,9 +142,8 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: () {
         // Validasi form saat tombol ditekan.
         if (_formKey.currentState!.validate()) {
-          // Jika validasi sukses, navigasi ke halaman 'Account Page'.
-          // Pastikan 'Account Page' terdaftar di routes main.dart Anda.
-          Navigator.pushReplacementNamed(context, '/account');
+          // Jika validasi berhasil, navigasi ke halaman AccountPage.
+          Navigator.pushReplacementNamed(context, 'accountPage');
         }
       },
       style: ElevatedButton.styleFrom(
