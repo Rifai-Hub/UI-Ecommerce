@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui_ecommerce/pages/change_password_page.dart'; // Pastikan path ini benar
+import 'package:ui_ecommerce/pages/change_password.dart'; // Pastikan path ini benar
 
 // Widget utama untuk halaman akun.
 // Diubah menjadi StatefulWidget untuk bisa menggunakan animasi.
@@ -315,4 +315,3 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
     );
   }
 }
-�
