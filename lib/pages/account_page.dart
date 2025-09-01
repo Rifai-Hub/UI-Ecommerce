@@ -154,7 +154,7 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
               Text(
-                'Rifai Gusnian Ahmad',
+                'Rifai Gusnian',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -163,7 +163,7 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
               ),
               SizedBox(height: 5),
               Text(
-                'rifaigusnian1401@gmail.com',
+                'rifai@example.com',
                 style: TextStyle(color: Colors.white70, fontSize: 16),
               ),
             ],
