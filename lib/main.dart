@@ -5,6 +5,8 @@ import 'package:ui_ecommerce/pages/account_page.dart';
 import 'package:ui_ecommerce/pages/change_password.dart';
 import 'package:ui_ecommerce/pages/home_page.dart';
 import 'package:ui_ecommerce/pages/cart_page.dart';
+import 'package:ui_ecommerce/pages/list_chat.dart';
+import 'package:ui_ecommerce/chat/detail_chat.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,8 +27,11 @@ class MyApp extends StatelessWidget {
         'cartPage': (context) => CartPage(),
         'changePassword': (context) => ChangePasswordPage(),
         'homePage': (context) => HomePage(),
+        'listChat': (context) => ChatListPage(),
+        "ChatDetail": (context) =>
+            ChatScreen(contactName: 'Nike Official'),
         
-      },
+      }
     );
   }
 }
