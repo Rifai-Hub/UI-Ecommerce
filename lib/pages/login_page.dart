@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
         // Validasi form saat tombol ditekan.
         if (_formKey.currentState!.validate()) {
           // Jika validasi berhasil, navigasi ke halaman AccountPage.
-          Navigator.pushReplacementNamed(context, 'accountPage');
+          Navigator.pushReplacementNamed(context, 'homePage');
         }
       },
       style: ElevatedButton.styleFrom(

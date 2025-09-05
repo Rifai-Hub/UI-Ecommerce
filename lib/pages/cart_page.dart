@@ -1,16 +1,16 @@
-import 'package:ui_ecommerce/widgets/cart_app_bar.dart';
-import 'package:ui_ecommerce/widgets/cart_bottom_nav_bar.dart';
-import 'package:ui_ecommerce/widgets/cart_item_samples.dart';
+import 'package:ui_ecommerce/widgets/cart/cart_app_bar.dart';
+import 'package:ui_ecommerce/widgets/cart/cart_bottom_nav_bar.dart';
+import 'package:ui_ecommerce/widgets/cart/cart_item_samples.dart';
 import 'package:flutter/material.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
 
   @override
-  _CartPageState createState() => _CartPageState();
+  CartPageState createState() => CartPageState();
 }
 
-class _CartPageState extends State<CartPage> {
+class CartPageState extends State<CartPage> {
   final ValueNotifier<List<int>> _quantities = ValueNotifier<List<int>>(List.filled(4, 1));
   final ValueNotifier<double> _totalPrice = ValueNotifier<double>(0.0);
 
