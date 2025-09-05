@@ -31,10 +31,12 @@ class ItemsWidget extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
+                // 🔥 Changed: Tambahkan shadow halus agar lebih hidup
                 BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 6,
-                  offset: const Offset(0, 3),
+                  color: Colors.grey.withOpacity(0.15),
+                  blurRadius: 8,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
@@ -106,8 +108,10 @@ class ItemsWidget extends StatelessWidget {
                 const Text(
                   'Tulis deskripsi produk',
                   style: TextStyle(
+                    // 🔥 Changed: Ubah jadi italic + warna abu agar lebih menarik
                     fontSize: 14,
-                    color: Color(0xFF4C53A5),
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black54,
                   ),
                 ),
 

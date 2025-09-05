@@ -52,10 +52,23 @@ class _HomepageState extends State<HomePage> {
         // Mengatur warna navigation bar
         color: const Color(0XFF4C53A5),
         // Daftar ikon yang akan ditampilkan
-        items: const [
-          Icon(Icons.home, size: 30, color: Colors.white),
-          Icon(Icons.shopping_cart, size: 30, color: Colors.white),
-          Icon(Icons.account_circle_sharp, size: 30, color: Colors.white),
+        items: [
+          // 🔥 Changed: Tambahkan highlight pada ikon aktif dengan warna kuning
+          Icon(
+            Icons.home,
+            size: 30,
+            color: _currentIndex == 0 ? Colors.yellow : Colors.white,
+          ),
+          Icon(
+            Icons.shopping_cart,
+            size: 30,
+            color: _currentIndex == 1 ? Colors.yellow : Colors.white,
+          ),
+          Icon(
+            Icons.account_circle_sharp,
+            size: 30,
+            color: _currentIndex == 2 ? Colors.yellow : Colors.white,
+          ),
         ],
         // Mengatur indeks ikon yang aktif
         index: _currentIndex,
@@ -107,12 +120,18 @@ class HomePageContent extends StatelessWidget {
                 ),
                 child: const Row(
                   children: [
+                    // 🔥 Changed: Tambahkan ikon pencarian di sebelah kiri agar lebih intuitif
+                    Icon(
+                      Icons.search,
+                      size: 25,
+                      color: Color(0XFF4C53A5),
+                    ),
+                    SizedBox(width: 10),
                     Expanded(
                       child: TextField(
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Search here...',
-                          icon: Icon(Icons.search),
                         ),
                       ),
                     ),
@@ -143,13 +162,24 @@ class HomePageContent extends StatelessWidget {
               Container(
                 alignment: Alignment.centerLeft,
                 margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: const Text(
-                  'Best Selling',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0XFF4C53A5),
-                  ),
+                child: const Row(
+                  children: [
+                    // 🔥 Changed: Tambahkan ikon filter di samping teks "Best Selling"
+                    Text(
+                      'Best Selling',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0XFF4C53A5),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Icon(
+                      Icons.filter_list,
+                      color: Color(0XFF4C53A5),
+                      size: 28,
+                    ),
+                  ],
                 ),
               ),
               // Widget untuk menampilkan daftar produk
