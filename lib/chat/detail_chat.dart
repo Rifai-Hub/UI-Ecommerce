@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
   final String contactName;
+  final String avatarAsset; // ✅ Tambahan: supaya AppBar bisa pakai avatar juga
 
-  const ChatScreen({required this.contactName, super.key});
+  const ChatScreen({
+    required this.contactName,
+    required this.avatarAsset, // ✅ Tambahan
+    super.key,
+  });
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -25,7 +30,9 @@ class _ChatScreenState extends State<ChatScreen> {
         messages.add({
           'text': _controller.text,
           'isMe': true,
-          'time': '13:05',
+          // ✅ Ubah jadi waktu otomatis
+          'time':
+              "${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}",
         });
       });
       _controller.clear();
@@ -35,11 +42,28 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // ✅ Ubah AppBar → Tambahkan avatar & nama
       appBar: AppBar(
-        title: Text(widget.contactName),
         backgroundColor: Colors.white,
+        title: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: NetworkImage(widget.avatarAsset), // ✅ Avatar toko
+              radius: 18,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              widget.contactName,
+              style: const TextStyle(
+                color: Color(0xFF4C53A5),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
         iconTheme: const IconThemeData(color: Color(0xFF4C53A5)),
       ),
+
       body: Column(
         children: [
           // ✅ Tampilkan Pesan dengan ListView
@@ -64,17 +88,24 @@ class _ChatScreenState extends State<ChatScreen> {
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
+                            // ✅ Warna berbeda untuk pesan masuk & keluar
                             color: message['isMe']
-                                ? Colors.orange.shade100
+                                ? const Color(0xFF4C53A5)
                                 : Colors.grey.shade200,
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Text(
                             message['text'],
-                            style: const TextStyle(fontSize: 16),
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: message['isMe']
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 4),
+                        // ✅ Waktu pesan
                         Text(
                           message['time'],
                           style: TextStyle(
@@ -90,11 +121,17 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
 
-          // ✅ Tambahkan Input dan Tombol Kirim
+          // ✅ Tambahkan Input dan Tombol Kirim lebih menarik
           Padding(
             padding: const EdgeInsets.all(8),
             child: Row(
               children: [
+                // ✅ Tambah ikon emoji
+                IconButton(
+                  icon: const Icon(Icons.emoji_emotions_outlined,
+                      color: Color(0xFF4C53A5)),
+                  onPressed: () {},
+                ),
                 Expanded(
                   child: TextField(
                     controller: _controller,
@@ -114,10 +151,13 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  color: const Color(0xFF4C53A5),
-                  onPressed: _sendMessage,
+                // ✅ Tombol kirim dengan background bulat
+                CircleAvatar(
+                  backgroundColor: const Color(0xFF4C53A5),
+                  child: IconButton(
+                    icon: const Icon(Icons.send, color: Colors.white),
+                    onPressed: _sendMessage,
+                  ),
                 ),
               ],
             ),

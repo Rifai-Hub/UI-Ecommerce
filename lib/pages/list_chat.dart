@@ -20,7 +20,6 @@ final List<Map<String, String>> chats = [
   },
 ];
 
-
 class ChatListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -130,7 +129,7 @@ class ChatListPage extends StatelessWidget {
                       'ChatDetail',
                       arguments: {
                         'contactName': chat['name'],
-                        'avatarAsset': chat['avatar'],
+                        'avatarAsset': chat['avatar'], // ✅ Tambahan: kirim avatar ke ChatScreen
                       },
                     );
                   },
