@@ -28,8 +28,13 @@ class MyApp extends StatelessWidget {
         'changePassword': (context) => ChangePasswordPage(),
         'homePage': (context) => HomePage(),
         'listChat': (context) => ChatListPage(),
-        "ChatDetail": (context) =>
-            ChatScreen(contactName: 'Nike Official'),
+         "ChatDetail": (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+          return ChatScreen(
+            contactName: args['contactName'],
+            avatarAsset: args['avatarAsset'],
+          );
+        },
         
       }
     );

@@ -45,7 +45,7 @@ class HomeAppBar extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 // Navigasi ke halaman 'ListChat' saat ikon diklik
-                Navigator.pushNamed(context, 'ListChat');
+                Navigator.pushNamed(context, 'listChat');
               },
               child: const Icon(
                 Icons.message_sharp,
