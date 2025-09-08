@@ -2,6 +2,7 @@ import 'package:ui_ecommerce/widgets/cart/cart_app_bar.dart';
 import 'package:ui_ecommerce/widgets/cart/cart_bottom_nav_bar.dart';
 import 'package:ui_ecommerce/widgets/cart/cart_item_samples.dart';
 import 'package:flutter/material.dart';
+import 'package:ui_ecommerce/theme/app_theme.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -31,54 +32,36 @@ class CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.backgroundColor,
       body: ListView(
         children: [
           const CartAppBar(),
 
-          // Membuat Kontent Keranjang
           Container(
-            height: 700,
-            padding: const EdgeInsets.only(top: 15),
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height - 200,
+            ),
+            padding: const EdgeInsets.only(top: 20),
             decoration: const BoxDecoration(
-              color: Color(0xFFEDECF2),
+              color: AppTheme.backgroundColor,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(35),
-                topRight: Radius.circular(35),
+                topLeft: Radius.circular(24),
+                topRight: Radius.circular(24),
               ),
             ),
             child: Column(
               children: [
                 CartItemSamples(
-                  quantities: _quantities, // Kirim data kuantitas
-                  onQuantityChanged: _updateTotal, // Callback untuk memperbarui total
+                  quantities: _quantities,
+                  onQuantityChanged: _updateTotal,
                 ),
-                // CartBottomNavBar(), // Dihapus karena sudah ada di bottomNavigationBar
-
-                // Soal 3.3.8: Menghapus placeholder Add Coupon Code karena sudah dipindahkan ke CartBottomNavBar
-
-                // Membuat Tombol "Add Coupon Code"
-                // Container(
-                //   margin: const EdgeInsets.symmetric(
-                //     vertical: 20,
-                //     horizontal: 15,
-                //   ),
-                //   padding: const EdgeInsets.all(10),
-                //   child: Text(
-                //     'Add Coupon Code',
-                //     style: TextStyle(
-                //       color: Color(0xFF4C53A5),
-                //       fontWeight: FontWeight.bold,
-                //       fontSize: 16,
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),
         ],
       ),
       bottomNavigationBar:
-          CartBottomNavBar(totalPrice: _totalPrice), // Bottom NavBar Khusus Cart
+          CartBottomNavBar(totalPrice: _totalPrice),
     );
   }
 }

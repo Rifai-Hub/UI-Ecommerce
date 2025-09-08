@@ -109,80 +109,111 @@ class HomePageContent extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // Container untuk fitur search bar
+              // Enhanced search bar
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                height: 50,
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                height: 56,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: AppTheme.cardShadow,
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    // 🔥 Changed: Tambahkan ikon pencarian di sebelah kiri agar lebih intuitif
-                    Icon(
+                    const Icon(
                       Icons.search,
-                      size: 25,
-                      color: Color(0XFF4C53A5),
+                      size: 24,
+                      color: AppTheme.primaryColor,
                     ),
-                    SizedBox(width: 10),
-                    Expanded(
+                    const SizedBox(width: 16),
+                    const Expanded(
                       child: TextField(
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Search here...',
+                          hintText: 'Search products...',
+                          hintStyle: TextStyle(
+                            color: AppTheme.textLight,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
-                    Icon(
-                      Icons.camera_alt,
-                      size: 27,
-                      color: Color(0XFF4C53A5),
-                    ),
-                  ],
-                ),
-              ),
-              // Container untuk judul "Categories"
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: const Text(
-                  'Categories',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0XFF4C53A5),
-                  ),
-                ),
-              ),
-              // Widget untuk menampilkan daftar kategori
-              const CategoriesWidget(),
-              // Container untuk judul "Best Selling"
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: const Row(
-                  children: [
-                    // 🔥 Changed: Tambahkan ikon filter di samping teks "Best Selling"
-                    Text(
-                      'Best Selling',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0XFF4C53A5),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppTheme.primaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        Icons.tune,
+                        size: 20,
+                        color: AppTheme.primaryColor,
                       ),
                     ),
-                    SizedBox(width: 8),
-                    Icon(
-                      Icons.filter_list,
-                      color: Color(0XFF4C53A5),
-                      size: 28,
+                  ],
+                ),
+              ),
+              // Categories section header
+              Container(
+                alignment: Alignment.centerLeft,
+                margin: const EdgeInsets.fromLTRB(20, 24, 20, 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Categories',
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: AppTheme.textPrimary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'See All',
+                        style: TextStyle(
+                          color: AppTheme.primaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-              // Widget untuk menampilkan daftar produk
+              const CategoriesWidget(),
+              // Best selling section header
+              Container(
+                alignment: Alignment.centerLeft,
+                margin: const EdgeInsets.fromLTRB(20, 24, 20, 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Best Selling',
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: AppTheme.textPrimary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.filter_list,
+                        color: AppTheme.primaryColor,
+                        size: 20,
+                      ),
+                      label: const Text(
+                        'Filter',
+                        style: TextStyle(
+                          color: AppTheme.primaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const ItemsWidget(),
             ],
           ),

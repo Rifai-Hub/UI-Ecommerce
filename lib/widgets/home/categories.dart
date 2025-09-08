@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_ecommerce/theme/app_theme.dart';
 
 class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({super.key});
@@ -13,15 +14,17 @@ class CategoriesWidget extends StatelessWidget {
     ];
 
     return SizedBox(
-      height: 200, // area kategori lebih tinggi
+      height: 120,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
           children: [
             for (int i = 0; i < categories.length; i++)
               _HoverCategoryCard(
                 title: categories[i],
                 imagePath: 'images/categories/${i + 1}.jpg',
+                isFirst: i == 0,
               ),
           ],
         ),
@@ -33,10 +36,12 @@ class CategoriesWidget extends StatelessWidget {
 class _HoverCategoryCard extends StatefulWidget {
   final String title;
   final String imagePath;
+  final bool isFirst;
 
   const _HoverCategoryCard({
     required this.title,
     required this.imagePath,
+    this.isFirst = false,
   });
 
   @override
@@ -48,50 +53,49 @@ class _HoverCategoryCardState extends State<_HoverCategoryCard> {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      cursor: SystemMouseCursors.click,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeInOut,
-        width: _isHovered ? 160 : 150, // membesar saat hover
-        margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        padding: const EdgeInsets.all(16),
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _isHovered = true),
+      onTapUp: (_) => setState(() => _isHovered = false),
+      onTapCancel: () => setState(() => _isHovered = false),
+      child: Container(
+        width: 100,
+        margin: EdgeInsets.only(
+          left: widget.isFirst ? 0 : 12,
+          right: 12,
+        ),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(_isHovered ? 0.3 : 0.15),
-              blurRadius: _isHovered ? 12 : 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          gradient: _isHovered ? AppTheme.primaryGradient : null,
+          color: _isHovered ? null : Colors.white,
+          borderRadius: AppTheme.cardRadius,
+          boxShadow: _isHovered ? AppTheme.elevatedShadow : AppTheme.cardShadow,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: _isHovered ? 100 : 90, // gambar ikut membesar
-              width: _isHovered ? 100 : 90,
+              height: 48,
+              width: 48,
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(20),
+                color: _isHovered ? Colors.white.withOpacity(0.2) : AppTheme.primaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
                 image: DecorationImage(
                   image: AssetImage(widget.imagePath),
                   fit: BoxFit.cover,
+                  colorFilter: _isHovered 
+                      ? const ColorFilter.mode(Colors.white, BlendMode.modulate)
+                      : ColorFilter.mode(AppTheme.primaryColor, BlendMode.modulate),
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Text(
               widget.title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Color(0xFF4C53A5),
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
+                color: _isHovered ? Colors.white : AppTheme.textPrimary,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
