@@ -1,168 +1,181 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ChatScreen extends StatefulWidget {
   final String contactName;
-  final String avatarAsset; // ✅ Tambahan: supaya AppBar bisa pakai avatar juga
+  final String avatarAsset;
 
   const ChatScreen({
-    required this.contactName,
-    required this.avatarAsset, // ✅ Tambahan
     super.key,
+    required this.contactName,
+    required this.avatarAsset,
   });
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  // ✅ Siapkan Data Pesan dan Controller
-  List<Map<String, dynamic>> messages = [
-    {'text': 'Hallo', 'isMe': true, 'time': '12:55'},
-    {'text': 'Ada yang bisa dibantu?', 'isMe': false, 'time': '13:00'},
+  final List<Map<String, dynamic>> _messages = [
+    {
+      'text': 'Halo, ada yang bisa saya bantu terkait produk?',
+      'isMe': false,
+    },
+    {
+      'text': 'Ya, saya ingin bertanya tentang status pesanan saya.',
+      'isMe': true,
+    },
+    {
+      'text': 'Tentu. Boleh informasikan nomor pesanan Anda?',
+      'isMe': false,
+    },
   ];
 
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
 
-  // ✅ Buat Fungsi Kirim Pesan
-  void _sendMessage() {
-    if (_controller.text.isNotEmpty) {
+  void _handleSubmitted(String text) {
+    if (text.isNotEmpty) {
       setState(() {
-        messages.add({
-          'text': _controller.text,
+        _messages.add({
+          'text': text,
           'isMe': true,
-          // ✅ Ubah jadi waktu otomatis
-          'time':
-              "${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}",
         });
       });
-      _controller.clear();
+      _textController.clear();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // ✅ Ubah AppBar → Tambahkan avatar & nama
+      // Menggunakan AppBar dengan tinggi yang diatur langsung
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        toolbarHeight: 70.0, // Tinggi yang lebih ringkas
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF0095DA), Color(0xFF5EBEF3)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Row(
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(widget.avatarAsset), // ✅ Avatar toko
-              radius: 18,
+              backgroundImage: NetworkImage(widget.avatarAsset),
+              radius: 20,
             ),
             const SizedBox(width: 10),
             Text(
               widget.contactName,
-              style: const TextStyle(
-                color: Color(0xFF4C53A5),
+              style: GoogleFonts.poppins(
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
           ],
         ),
-        iconTheme: const IconThemeData(color: Color(0xFF4C53A5)),
       ),
-
       body: Column(
         children: [
-          // ✅ Tampilkan Pesan dengan ListView
           Expanded(
             child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               reverse: true,
-              itemCount: messages.length,
+              itemCount: _messages.length,
               itemBuilder: (context, index) {
-                final message = messages[messages.length - index - 1];
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                  child: Align(
-                    alignment: message['isMe']
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                    child: Column(
-                      crossAxisAlignment: message['isMe']
-                          ? CrossAxisAlignment.end
-                          : CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            // ✅ Warna berbeda untuk pesan masuk & keluar
-                            color: message['isMe']
-                                ? const Color(0xFF4C53A5)
-                                : Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Text(
-                            message['text'],
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: message['isMe']
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        // ✅ Waktu pesan
-                        Text(
-                          message['time'],
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+                final message = _messages[_messages.length - 1 - index];
+                return _buildMessageBubble(context, message['text'], message['isMe']);
               },
             ),
           ),
-
-          // ✅ Tambahkan Input dan Tombol Kirim lebih menarik
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              children: [
-                // ✅ Tambah ikon emoji
-                IconButton(
-                  icon: const Icon(Icons.emoji_emotions_outlined,
-                      color: Color(0xFF4C53A5)),
-                  onPressed: () {},
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: 'Type a message...',
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 16,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                // ✅ Tombol kirim dengan background bulat
-                CircleAvatar(
-                  backgroundColor: const Color(0xFF4C53A5),
-                  child: IconButton(
-                    icon: const Icon(Icons.send, color: Colors.white),
-                    onPressed: _sendMessage,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          _buildMessageComposer(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMessageBubble(BuildContext context, String message, bool isMe) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final maxBubbleWidth = screenWidth * 0.75;
+
+    return Align(
+      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        constraints: BoxConstraints(maxWidth: maxBubbleWidth),
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        decoration: BoxDecoration(
+          color: isMe ? const Color(0xFF0095DA) : Colors.grey[300],
+          borderRadius: isMe
+              ? const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
+                )
+              : const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
+        ),
+        child: Text(
+          message,
+          style: GoogleFonts.poppins(
+            color: isMe ? Colors.white : Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMessageComposer() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      color: Colors.white,
+      child: SafeArea(
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextField(
+                  controller: _textController,
+                  onSubmitted: _handleSubmitted,
+                  decoration: InputDecoration(
+                    hintText: 'Ketik pesan...',
+                    hintStyle: GoogleFonts.poppins(color: Colors.grey),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              decoration: const BoxDecoration(
+                color: Color(0xFF0095DA),
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.send, color: Colors.white),
+                onPressed: () => _handleSubmitted(_textController.text),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

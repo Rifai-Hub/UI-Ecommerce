@@ -1,61 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:ui_ecommerce/pages/change_password.dart'; // Pastikan path ini benar
+import 'package:ui_ecommerce/pages/change_password.dart';
 
-// Widget utama untuk halaman akun.
-// Diubah menjadi StatefulWidget untuk bisa menggunakan animasi.
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
-
-  // ​‌‌‍⁡⁣⁣⁢𝗪𝗶𝗱𝗴𝗲𝘁 𝗕𝘂𝗶𝗹𝗱 𝗶𝘁𝘂 𝗳𝘂𝗻𝗴𝘀𝗶 𝘂𝗻𝘁𝘂𝗸 𝗺𝗲𝗻𝗮𝗺𝗽𝗶𝗹𝗸𝗮𝗻 𝗵𝗮𝗹𝗮𝗺𝗮𝗻 𝗔𝗰𝗰𝗼𝘂𝗻𝘁 𝗣𝗮𝗴𝗲⁡​
 
   @override
   State<AccountPage> createState() => _AccountPageState();
 }
 
-// Kelas State yang mengelola data dan UI dari AccountPage.
-// Ditambahkan SingleTickerProviderStateMixin untuk AnimationController.
 class _AccountPageState extends State<AccountPage> with SingleTickerProviderStateMixin {
-  // Controller untuk mengelola animasi.
   late AnimationController _animationController;
-  // Animasi untuk efek slide (pergerakan).
   late Animation<Offset> _slideAnimation;
-  // Animasi untuk efek fade (muncul/hilang secara perlahan).
   late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
-    // Inisialisasi AnimationController.
     _animationController = AnimationController(
-      vsync: this, // Menghubungkan controller dengan TickerProvider.
-      duration: const Duration(milliseconds: 800), // Durasi animasi 0.8 detik.
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
     );
 
-    // Mendefinisikan animasi slide: mulai dari sedikit di bawah, berakhir di posisi normal.
     _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.2), // Mulai 20% di bawah posisi akhir.
-      end: Offset.zero, // Berakhir di posisi normal (0,0).
+      begin: const Offset(0, 0.2),
+      end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _animationController,
-      curve: Curves.easeOut, // Kurva animasi yang halus (mulai cepat, melambat di akhir).
+      curve: Curves.easeOut,
     ));
 
-    // Mendefinisikan animasi fade: mulai dari transparan penuh, berakhir buram penuh.
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: Curves.easeIn, // Kurva animasi fade (mulai perlahan, semakin jelas).
+        curve: Curves.easeIn,
       ),
     );
-
-    // Memulai animasi saat halaman dimuat.
     _animationController.forward();
   }
 
   @override
   void dispose() {
-    // Penting: Membuang AnimationController saat widget tidak lagi digunakan
-    // untuk mencegah kebocoran memori.
     _animationController.dispose();
     super.dispose();
   }
@@ -65,34 +49,34 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'My Account',
+          'Akun Saya',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 22,
           ),
         ),
-        backgroundColor: Colors.transparent, // Biar transparan
-        elevation: 0, // Hilangkan bayangan AppBar
-        flexibleSpace: Container( // Buat gradient background ke AppBar
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        flexibleSpace: Container(
           decoration: const BoxDecoration(
+            // Menggunakan gradien biru Blibli
             gradient: LinearGradient(
-              colors: [Color(0xFF4C53A5), Color(0xFF6B7cda)],
+              colors: [Color(0xFF0095DA), Color(0xFF5EBEF3)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)), // Sudut melengkung dibawah AppBar
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
           ),
         ),
-        iconTheme: const IconThemeData(color: Colors.white), // Warna ikon (ex: back button)
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch, // Agar elemen merentang horizontal
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Menggunakan FadeTransition dan SlideTransition untuk animasi pada Profile Section.
               FadeTransition(
                 opacity: _fadeAnimation,
                 child: SlideTransition(
@@ -101,7 +85,6 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
                 ),
               ),
               const SizedBox(height: 30),
-              // Menggunakan FadeTransition dan SlideTransition untuk animasi pada Settings Section.
               FadeTransition(
                 opacity: _fadeAnimation,
                 child: SlideTransition(
@@ -119,31 +102,28 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
   Widget _buildProfileSection() {
     return Container(
       decoration: BoxDecoration(
+        // Menggunakan gradien biru Blibli
         gradient: const LinearGradient(
-          colors: [Color(0xFF4C53A5), Color(0xFF6B7cda)],
+          colors: [Color(0xFF0095DA), Color(0xFF5EBEF3)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: const BorderRadius.all(Radius.circular(15)),
         boxShadow: [
-          BoxShadow( // Menambahkan bayangan
-            // PERBAIKAN DI SINI: Menggunakan withAlpha() sebagai pengganti withOpacity()
-            // 0.5 opasitas berarti 50% transparan.
-            // Nilai alpha berkisar dari 0 (transparan penuh) hingga 255 (buram penuh).
-            // Jadi, 0.5 * 255 = 127.5, dibulatkan menjadi 128.
+          BoxShadow(
             color: Colors.grey.withAlpha((255 * 0.5).round()),
             spreadRadius: 2,
             blurRadius: 7,
-            offset: const Offset(0, 3), // Pergeseran bayangan
+            offset: const Offset(0, 3),
           )
-        ]
+        ],
       ),
       padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
       child: Row(
         children: [
           ClipOval(
             child: Image.asset(
-              'assets/images/profil_rifai.png', // Pastikan path gambar sudah benar
+              'assets/images/profil_rifai.png',
               width: 100,
               height: 100,
               fit: BoxFit.cover,
@@ -173,7 +153,6 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
     );
   }
 
-  // ⁡⁣⁣⁢​‌‌‍𝗪𝗶𝗴𝗲𝘁 𝗨𝗻𝘁𝘂𝗸 𝗦𝗲𝘁𝗶𝗮𝗽 𝗣𝗲𝗻𝗴𝗮𝘁𝘂𝗿𝗮𝗻​⁡
   Widget _buildSettingItem(
     BuildContext context, {
     required IconData icon,
@@ -185,7 +164,8 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: ListTile(
-        leading: Icon(icon, color: const Color(0xFF4c53a5), size: 28),
+        // Menggunakan warna biru solid Blibli
+        leading: Icon(icon, color: const Color(0xFF0095DA), size: 28),
         title: Text(
           title,
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
@@ -200,28 +180,24 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
     );
   }
 
-  // ⁡⁣⁣⁢​‌‌‍𝗠𝗲𝗻𝘆𝘂𝘀𝘂𝗻 𝗠𝗲𝗻𝘂 𝗦𝗲𝘁𝘁𝗶𝗻𝗴𝘀​⁡
-
   Widget _buildSettingsSection(BuildContext context) {
     return Column(
       children: [
         _buildSettingItem(
           context,
           icon: Icons.person_outline,
-          title: 'Edit Profile', // Mengganti teks Profile menjadi Edit Profile
+          title: 'Edit Profil',
           onTap: () {
-            // Navigasi ke halaman Edit Profile (jika ada)
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Navigasi ke Edit Profile')),
+              const SnackBar(content: Text('Navigasi ke Edit Profil')),
             );
           },
         ),
         _buildSettingItem(
           context,
-          icon: Icons.lock_open_outlined, // Ikon baru untuk Change Password
-          title: 'Change Password',
+          icon: Icons.lock_open_outlined,
+          title: 'Ubah Password',
           onTap: () {
-            // Navigasi ke halaman ChangePasswordPage
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const ChangePasswordPage()),
@@ -230,8 +206,8 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
         ),
         _buildSettingItem(
           context,
-          icon: Icons.notifications_active_outlined, // Ikon baru untuk Notifications
-          title: 'Notifications',
+          icon: Icons.notifications_active_outlined,
+          title: 'Notifikasi',
           onTap: () {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Navigasi ke Notifikasi')),
@@ -240,8 +216,8 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
         ),
         _buildSettingItem(
           context,
-          icon: Icons.info_outline, // Ikon baru untuk Help & Support
-          title: 'Help & Support',
+          icon: Icons.info_outline,
+          title: 'Bantuan & Dukungan',
           onTap: () {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Navigasi ke Bantuan')),
@@ -251,7 +227,7 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
         _buildSettingItem(
           context,
           icon: Icons.logout,
-          title: 'Logout',
+          title: 'Keluar',
           onTap: () {
             _showLogoutDialog(context);
           },
@@ -259,8 +235,6 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
       ],
     );
   }
-
-  // ⁡⁣⁣⁢​‌‌‍​‌‌‍‍⁡⁣⁣⁢𝗠𝗲𝗻𝘂 𝗟𝗢𝗚𝗨𝗧, 𝗮𝗸𝗮𝗻 𝘁𝗮𝗺𝗽𝗶𝗹 𝗮𝗽𝗮𝗯𝗶𝗹𝗮 𝘁𝗼𝗺𝗯𝗼𝗹 𝗹𝗼𝗴𝗼𝘂𝘁 𝗱𝗶 𝗸𝗹𝗶𝗸⁡​
 
   void _showLogoutDialog(BuildContext context) {
     showDialog(
@@ -271,38 +245,38 @@ class _AccountPageState extends State<AccountPage> with SingleTickerProviderStat
             borderRadius: BorderRadius.circular(20),
           ),
           title: const Text(
-            'Logout',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF4C53A5)),
+            'Keluar',
+            // Menggunakan warna biru solid Blibli
+            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF0095DA)),
           ),
-          content: const Text('Are you sure you want to logout?'),
+          content: const Text('Apakah Anda yakin ingin keluar?'),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Tutup dialog
+                Navigator.of(context).pop();
               },
-              child: const Text('Cancel', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500)),
+              child: const Text('Batal', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500)),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Tutup dialog
-                // Tampilkan SnackBar
+                Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Logout Successful!'),
-                    backgroundColor: Colors.green, // Warna SnackBar
+                    content: Text('Berhasil Keluar!'),
+                    backgroundColor: Colors.green,
                   ),
                 );
-                // Arahkan kembali ke halaman Login
                 Navigator.pushNamedAndRemoveUntil(context, 'loginPage', (route) => false);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF4C53A5),
+                // Menggunakan warna biru solid Blibli
+                backgroundColor: const Color(0xFF0095DA),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
               child: const Text(
-                'Logout',
+                'Keluar',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,

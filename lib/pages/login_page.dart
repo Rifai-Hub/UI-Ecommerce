@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -8,59 +9,123 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Form Login
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-    // Tambahkan deklarasi variabel _isPasswordVisible di sini
-  bool _isPasswordVisible = false; // Baris ini yang hilang
+  bool _isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildEcommerceLogo(),
-                _buildHeader(),
-                const SizedBox(height: 40),
-                _buildEmailField(),
-                const SizedBox(height: 20),
-                _buildPasswordField(),
-                const SizedBox(height: 30),
-                _buildLoginButton(context),
-                const SizedBox(height: 20),
-                _buildSignUpLink(context),
-                
-              ],
+      body: Stack(
+        children: [
+          // Latar belakang gradien
+          Positioned.fill(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF0095DA), Color(0xFF5EBEF3)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
             ),
           ),
-        ),
+
+          // Konten scrollable + center
+          SingleChildScrollView(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height, // isi penuh layar
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            // child: Text(
+                            //   // 'Rifai Shop',
+                            //   style: GoogleFonts.poppins(
+                            //     fontSize: 24,
+                            //     fontWeight: FontWeight.bold,
+                            //     color: Colors.white.withOpacity(0.9),
+                            //     letterSpacing: 1.2,
+                            //   ),
+                            // ),
+                          ),
+                        ),
+                        const SizedBox(height: 50),
+                        _buildHeader(),
+                        const SizedBox(height: 40),
+                        Container(
+                          padding: const EdgeInsets.all(24.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.95),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 10,
+                                offset: const Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              _buildEmailField(),
+                              const SizedBox(height: 20),
+                              _buildPasswordField(),
+                              const SizedBox(height: 30),
+                              _buildLoginButton(context),
+                              const SizedBox(height: 20),
+                              Text(
+                                'Atau login dengan',
+                                style: GoogleFonts.poppins(
+                                    color: Colors.grey, fontSize: 14),
+                              ),
+                              const SizedBox(height: 20),
+                              _buildSocialLoginButtons(),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        _buildSignUpLink(context),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildHeader() {
-    return const Column(
+    return Column(
       children: [
         Text(
-          'Welcome Back',
-          style: TextStyle(
-            fontSize: 32,
+          'Selamat Datang',
+          style: GoogleFonts.poppins(
+            fontSize: 28,
             fontWeight: FontWeight.bold,
-            color: Color(0XFF4c53a5),
+            color: Colors.white,
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text(
-          'Login to Continue',
-          style: TextStyle(fontSize: 10, color: Color(0XFF4c53a5)),
+          'Silakan Login',
+          style: GoogleFonts.poppins(
+            fontSize: 16,
+            color: Colors.white70,
+          ),
         ),
       ],
     );
@@ -69,19 +134,19 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildEmailField() {
     return TextFormField(
       controller: _emailController,
-      keyboardType: TextInputType.emailAddress, // Tipe keyboard untuk email.
+      keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         labelText: 'Email',
         hintText: 'Masukkan email Anda',
-        prefixIcon: const Icon(Icons.email, color: Color(0xFF4C53A5)),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)), // Sudut border lebih melengkung.
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF4C53A5), width: 1.0),
-        ),
+        prefixIcon: const Icon(Icons.email, color: Color(0xFF0095DA)),
+        filled: true,
+        fillColor: Colors.grey[200],
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF4C53A5), width: 2.0),
+          borderSide: const BorderSide(color: Color(0xFF0095DA), width: 2.0),
         ),
       ),
       validator: (value) {
@@ -96,33 +161,33 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
- Widget _buildPasswordField() {
+  Widget _buildPasswordField() {
     return TextFormField(
       controller: _passwordController,
-      obscureText: !_isPasswordVisible, // Kontrol visibilitas password.
+      obscureText: !_isPasswordVisible,
       decoration: InputDecoration(
         labelText: 'Password',
         hintText: 'Masukkan password Anda',
-        prefixIcon: const Icon(Icons.lock, color: Color(0xFF4C53A5)),
-        suffixIcon: IconButton( // Tombol untuk show/hide password.
+        prefixIcon: const Icon(Icons.lock, color: Color(0xFF0095DA)),
+        filled: true,
+        fillColor: Colors.grey[200],
+        suffixIcon: IconButton(
           icon: Icon(
             _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-            color: const Color(0xFF4C53A5),
+            color: const Color(0xFF0095DA),
           ),
           onPressed: () {
             setState(() {
-              _isPasswordVisible = !_isPasswordVisible; // Ubah state visibilitas.
+              _isPasswordVisible = !_isPasswordVisible;
             });
           },
         ),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF4C53A5), width: 1.0),
-        ),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF4C53A5), width: 2.0),
+          borderSide: const BorderSide(color: Color(0xFF0095DA), width: 2.0),
         ),
       ),
       validator: (value) {
@@ -140,23 +205,78 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Validasi form saat tombol ditekan.
         if (_formKey.currentState!.validate()) {
-          // Jika validasi berhasil, navigasi ke halaman AccountPage.
           Navigator.pushReplacementNamed(context, 'homePage');
         }
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF4C53A5), // Warna latar belakang tombol.
+        backgroundColor: const Color(0xFF0095DA),
         padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        // Shadow
         elevation: 5,
-        shadowColor: const Color(0xFF4C53A5).withAlpha((255 * 0.4).round()),
+        shadowColor: const Color(0xFF0095DA).withAlpha((255 * 0.4).round()),
       ),
-      child: const Text(
+      child: Text(
         'Login',
-        style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+        style: GoogleFonts.poppins(
+            color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildSocialLoginButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        _buildSocialButton(
+          iconUrl:
+              'https://cdn-icons-png.flaticon.com/512/281/281764.png',
+          onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Login dengan Google')),
+            );
+          },
+        ),
+        _buildSocialButton(
+          iconUrl:
+              'https://cdn-icons-png.flaticon.com/512/124/124010.png',
+          onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Login dengan Facebook')),
+            );
+          },
+        ),
+        _buildSocialButton(
+          iconUrl:
+              'https://cdn-icons-png.flaticon.com/512/5968/5968830.png',
+          onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Login dengan X')),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSocialButton(
+      {required String iconUrl, required VoidCallback onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Image.network(iconUrl, height: 30),
       ),
     );
   }
@@ -164,40 +284,30 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildSignUpLink(BuildContext context) {
     return TextButton(
       onPressed: () {
-        // Navigasi ke halaman RegisterPage.
         Navigator.pushNamed(context, 'registerPage');
       },
-      child: const Text(
-        'Don\'t have an account? Sign Up',
-        style: TextStyle(
-          color: Color(0xFF4C53A5),
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: 'Belum punya akun? ',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+            TextSpan(
+              text: 'Daftar',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
-
-Widget _buildEcommerceLogo() {
-  return Column(
-    children: [
-      Image.asset(
-        'assets/images/Rifai_jumbo.png',
-        height: 100,
-        width: 100,  
-      ),
-      const SizedBox(height: 10), // Memberi jarak antara logo dan teks
-      const Text(
-        'Rifai Shop',
-        style: TextStyle(
-          fontSize: 28,
-          fontWeight: FontWeight.bold,
-          color: Color(0xFF4c53a5),
-        ),
-      ),
-    ],
-  );
-}
-

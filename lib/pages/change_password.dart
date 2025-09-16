@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // Widget utama untuk halaman "Change Password".
-// Ini adalah StatefulWidget karena memiliki state yang bisa berubah
-// (misalnya, visibilitas password).
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
 
   @override
-  // Metode ini membuat dan mengembalikan instance dari kelas State (_ChangePasswordPageState).
   State<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
 
@@ -26,48 +24,44 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   bool _isConfirmNewPasswordVisible = false;
 
   @override
-  // Metode build ini bertanggung jawab untuk membangun UI halaman.
   Widget build(BuildContext context) {
     return Scaffold(
-      // AppBar di bagian atas halaman.
       appBar: AppBar(
-        title: const Text(
-          'Change Password',
-          style: TextStyle(
+        title: Text(
+          'Ubah Password',
+          style: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
-        // Warna latar belakang AppBar.
-        backgroundColor: const Color(0xFF4C53A5),
-        // Warna ikon dan teks di AppBar.
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF0095DA), Color(0xFF5EBEF3)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      // Body halaman, dibungkus dengan SingleChildScrollView agar bisa discroll.
       body: SingleChildScrollView(
-        // Padding di sekitar konten form.
         padding: const EdgeInsets.all(24.0),
         child: Form(
-          // Menghubungkan Form dengan GlobalKey untuk validasi.
           key: _formKey,
           child: Column(
-            // Merentangkan children secara horizontal.
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Teks deskripsi di bagian atas form.
-              const Text(
-                'Update your password for better security.',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-                textAlign: TextAlign.center,
-              ),
-              // Memberi jarak vertikal.
+              _buildHeaderSection(),
               const SizedBox(height: 30),
-              // Field input untuk password saat ini.
               _buildPasswordField(
                 controller: _currentPasswordController,
-                labelText: 'Current Password',
-                hintText: 'Enter your current password',
+                labelText: 'Password Saat Ini',
+                hintText: 'Masukkan password Anda saat ini',
                 isVisible: _isCurrentPasswordVisible,
                 onToggleVisibility: () {
                   setState(() {
@@ -76,18 +70,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Current password cannot be empty';
+                    return 'Password saat ini tidak boleh kosong';
                   }
-                  // Logika validasi password saat ini bisa ditambahkan di sini
                   return null;
                 },
               ),
               const SizedBox(height: 20),
-              // Field input untuk password baru.
               _buildPasswordField(
                 controller: _newPasswordController,
-                labelText: 'New Password',
-                hintText: 'Enter your new password',
+                labelText: 'Password Baru',
+                hintText: 'Masukkan password baru',
                 isVisible: _isNewPasswordVisible,
                 onToggleVisibility: () {
                   setState(() {
@@ -96,20 +88,19 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'New password cannot be empty';
+                    return 'Password baru tidak boleh kosong';
                   }
                   if (value.length < 6) {
-                    return 'New password must be at least 6 characters';
+                    return 'Password minimal 6 karakter';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 20),
-              // Field input untuk konfirmasi password baru.
               _buildPasswordField(
                 controller: _confirmNewPasswordController,
-                labelText: 'Confirm New Password',
-                hintText: 'Confirm your new password',
+                labelText: 'Konfirmasi Password Baru',
+                hintText: 'Konfirmasi password baru Anda',
                 isVisible: _isConfirmNewPasswordVisible,
                 onToggleVisibility: () {
                   setState(() {
@@ -118,42 +109,37 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Confirm new password cannot be empty';
+                    return 'Konfirmasi password baru tidak boleh kosong';
                   }
-                  // Memastikan password baru dan konfirmasi password cocok.
                   if (value != _newPasswordController.text) {
-                    return 'Passwords do not match';
+                    return 'Password tidak cocok';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 40),
-              // Tombol untuk "Change Password".
               ElevatedButton(
                 onPressed: () {
-                  // Memvalidasi seluruh form saat tombol ditekan.
                   if (_formKey.currentState!.validate()) {
-                    // Jika validasi sukses, tampilkan SnackBar dan kembali ke halaman sebelumnya.
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Password changed successfully!'),
+                        content: Text('Password berhasil diubah!'),
                         backgroundColor: Colors.green,
                       ),
                     );
-                    // Kembali ke halaman sebelumnya (AccountPage).
                     Navigator.pop(context);
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4C53A5),
+                  backgroundColor: const Color(0xFF0095DA),
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                   elevation: 5,
-                  shadowColor: const Color(0xFF4C53A5).withAlpha((255 * 0.4).round()),
+                  shadowColor: const Color(0xFF0095DA).withAlpha((255 * 0.4).round()),
                 ),
-                child: const Text(
-                  'Change Password',
-                  style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                child: Text(
+                  'Ubah Password',
+                  style: GoogleFonts.poppins(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -163,8 +149,52 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     );
   }
 
+  Widget _buildHeaderSection() {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: const LinearGradient(
+              colors: [Color(0xFF0095DA), Color(0xFF5EBEF3)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: const Icon(
+            Icons.lock_reset,
+            color: Colors.white,
+            size: 40,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          'Ubah Password',
+          style: GoogleFonts.poppins(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF0095DA),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          'Perbarui password Anda untuk keamanan yang lebih baik.',
+          style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
   // Widget pembantu yang reusable untuk membuat TextFormField password.
-  // Ini membantu mengurangi duplikasi kode.
   Widget _buildPasswordField({
     required TextEditingController controller,
     required String labelText,
@@ -175,35 +205,30 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   }) {
     return TextFormField(
       controller: controller,
-      // Mengatur apakah teks password disembunyikan atau terlihat.
       obscureText: !isVisible,
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
-        // Ikon gembok di awal field.
-        prefixIcon: const Icon(Icons.lock, color: Color(0xFF4C53A5)),
-        // Ikon mata di akhir field untuk show/hide password.
+        prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFF0095DA)),
         suffixIcon: IconButton(
           icon: Icon(
             isVisible ? Icons.visibility : Icons.visibility_off,
-            color: const Color(0xFF4C53A5),
+            color: const Color(0xFF0095DA),
           ),
           onPressed: onToggleVisibility,
         ),
-        // Styling border default.
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        // Styling border saat field tidak aktif.
+        filled: true,
+        fillColor: Colors.grey[200],
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF4C53A5), width: 1.0),
+          borderSide: BorderSide.none,
         ),
-        // Styling border saat field aktif/fokus.
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF4C53A5), width: 2.0),
+          borderSide: const BorderSide(color: Color(0xFF0095DA), width: 2.0),
         ),
       ),
-      // Fungsi validator untuk memeriksa input teks.
       validator: validator,
     );
   }
