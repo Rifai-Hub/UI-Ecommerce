@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart'; 
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:ui_ecommerce/pages/login_page.dart';
 import 'package:ui_ecommerce/pages/register_page.dart';
 import 'package:ui_ecommerce/pages/account_page.dart';
@@ -8,8 +9,14 @@ import 'package:ui_ecommerce/pages/home_page.dart';
 import 'package:ui_ecommerce/pages/cart_page.dart';
 import 'package:ui_ecommerce/pages/list_chat.dart';
 import 'package:ui_ecommerce/chat/detail_chat.dart';
+// import 'package:ui_ecommerce/theme/app_theme.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(const MyApp());
 }
 
@@ -20,7 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'homePage',
+      initialRoute: 'loginPage',
       routes: {
         'loginPage': (context) => LoginPage(),
         'registerPage': (context) => RegisterPage(),

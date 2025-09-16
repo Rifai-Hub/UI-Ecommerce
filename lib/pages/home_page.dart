@@ -121,7 +121,7 @@ class _HomePageContentState extends State<HomePageContent> {
         backgroundColor: const Color(0xFF0095DA),
         elevation: 4,
         title: Text(
-          'Happy Shop',
+          'Rifai Store',
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontSize: 22,
@@ -134,8 +134,10 @@ class _HomePageContentState extends State<HomePageContent> {
             icon: const Icon(Icons.chat_bubble_outline,
                 color: Colors.white, size: 26),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ChatListPage()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ChatListPage()),
+              );
             },
           ),
           const SizedBox(width: 10),
@@ -359,8 +361,8 @@ class _HomePageContentState extends State<HomePageContent> {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
                           _itemQuantities[title].toString(),
-                          style:
-                              GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                       GestureDetector(

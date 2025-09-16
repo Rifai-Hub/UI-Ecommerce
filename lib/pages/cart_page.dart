@@ -28,13 +28,17 @@ class CartPageState extends State<CartPage> {
     },
   ];
 
-  final ValueNotifier<List<int>> _quantities = ValueNotifier<List<int>>(List.filled(4, 1));
+  // Jumlah quantity sesuai jumlah item (3 item)
+  late final ValueNotifier<List<int>> _quantities =
+      ValueNotifier<List<int>>(List.filled(_cartItems.length, 1));
+
   final ValueNotifier<double> _totalPrice = ValueNotifier<double>(0.0);
 
   void _updateTotal() {
     double total = 0.0;
     for (int i = 0; i < _cartItems.length; i++) {
-      double price = double.parse(_cartItems[i]['price']!.replaceAll('.', ''));
+      double price =
+          double.parse(_cartItems[i]['price']!.replaceAll('.', ''));
       total += price * _quantities.value[i];
     }
     _totalPrice.value = total;
@@ -49,17 +53,20 @@ class CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       body: ListView(
         children: [
           _buildCartAppBar(),
           Container(
-            height: 700,
-            padding: const EdgeInsets.only(top: 15),
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height - 200,
+            ),
+            padding: const EdgeInsets.only(top: 20),
             decoration: const BoxDecoration(
-              color: Color(0xFFEDECF2),
+              color: Colors.white,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(35),
-                topRight: Radius.circular(35),
+                topLeft: Radius.circular(24),
+                topRight: Radius.circular(24),
               ),
             ),
             child: CartItemSamples(
@@ -149,7 +156,7 @@ class CartItemSamples extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15),
-                    child: Image.network(
+                    child: Image.asset( // 🔹 diganti asset
                       item['imageUrl']!,
                       height: 100,
                       width: 100,
@@ -201,29 +208,36 @@ class CartItemSamples extends StatelessWidget {
                             GestureDetector(
                               onTap: () {
                                 if (currentQuantities[index] > 1) {
-                                  List<int> newQuantities = List.from(currentQuantities);
+                                  List<int> newQuantities =
+                                      List.from(currentQuantities);
                                   newQuantities[index]--;
                                   quantities.value = newQuantities;
                                   onQuantityChanged();
                                 }
                               },
-                              child: const Icon(Icons.remove, color: Colors.white, size: 20),
+                              child: const Icon(Icons.remove,
+                                  color: Colors.white, size: 20),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               child: Text(
                                 currentQuantities[index].toString(),
-                                style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.bold),
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                             GestureDetector(
                               onTap: () {
-                                List<int> newQuantities = List.from(currentQuantities);
+                                List<int> newQuantities =
+                                    List.from(currentQuantities);
                                 newQuantities[index]++;
                                 quantities.value = newQuantities;
                                 onQuantityChanged();
                               },
-                              child: const Icon(Icons.add, color: Colors.white, size: 20),
+                              child: const Icon(Icons.add,
+                                  color: Colors.white, size: 20),
                             ),
                           ],
                         ),
@@ -289,7 +303,8 @@ class CartBottomNavBar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 16),
+                    const Icon(Icons.arrow_forward_ios,
+                        color: Colors.grey, size: 16),
                   ],
                 ),
               ),
@@ -321,10 +336,13 @@ class CartBottomNavBar extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF0095DA),
-                  padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 80, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
                   elevation: 5,
-                  shadowColor: const Color(0xFF0095DA).withAlpha((255 * 0.4).round()),
+                  shadowColor: const Color(0xFF0095DA)
+                      .withAlpha((255 * 0.4).round()),
                 ),
                 child: Text(
                   'Checkout',

@@ -45,21 +45,6 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            // child: Text(
-                            //   // 'Rifai Shop',
-                            //   style: GoogleFonts.poppins(
-                            //     fontSize: 24,
-                            //     fontWeight: FontWeight.bold,
-                            //     color: Colors.white.withOpacity(0.9),
-                            //     letterSpacing: 1.2,
-                            //   ),
-                            // ),
-                          ),
-                        ),
                         const SizedBox(height: 50),
                         _buildHeader(),
                         const SizedBox(height: 40),
@@ -131,8 +116,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  // --- email field: menggunakan CustomTextField yang didefinisikan di bawah file ini
   Widget _buildEmailField() {
-    return TextFormField(
+    return CustomTextField(
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
@@ -308,6 +294,42 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// ----------------------
+/// Simple CustomTextField
+/// ----------------------
+/// Jika kamu ingin pemakaian ulang styling TextField, pakai widget ini.
+/// Bisa dipindah ke file terpisah (mis. lib/widgets/custom_text_field.dart)
+class CustomTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final TextInputType? keyboardType;
+  final InputDecoration? decoration;
+  final String? Function(String?)? validator;
+  final bool obscureText;
+  final ValueChanged<String>? onChanged;
+
+  const CustomTextField({
+    super.key,
+    required this.controller,
+    this.keyboardType,
+    this.decoration,
+    this.validator,
+    this.obscureText = false,
+    this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      decoration: decoration,
+      validator: validator,
+      obscureText: obscureText,
+      onChanged: onChanged,
     );
   }
 }
